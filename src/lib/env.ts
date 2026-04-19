@@ -1,8 +1,15 @@
 import { z } from "zod";
 
+const optionalPublicUrl = z.preprocess(
+  (value) => (value === "" ? undefined : value),
+  z.string().url().optional(),
+);
+
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  NEXT_PUBLIC_APP_URL: z.string().url().optional(),
+  NEXT_PUBLIC_APP_URL: optionalPublicUrl,
+  NEXT_PUBLIC_CONTACT_FORM_URL: optionalPublicUrl,
+  NEXT_PUBLIC_REGISTER_FORM_URL: optionalPublicUrl,
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -15,6 +22,8 @@ export function getEnv(): Env {
   const parsed = envSchema.safeParse({
     NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_CONTACT_FORM_URL: process.env.NEXT_PUBLIC_CONTACT_FORM_URL,
+    NEXT_PUBLIC_REGISTER_FORM_URL: process.env.NEXT_PUBLIC_REGISTER_FORM_URL,
   });
 
   if (!parsed.success) {

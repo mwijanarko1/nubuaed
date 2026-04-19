@@ -41,7 +41,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# template-specific
-/docs
+# template-specific (local notes; keep map tracked for agents)
+/docs/*
 !/docs/CODEBASE_MAP.md
-/for-agent
+/for-agent/
